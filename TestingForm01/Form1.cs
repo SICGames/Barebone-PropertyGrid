@@ -149,26 +149,15 @@ namespace TestingForm01
         //-- FilePicker Editor
         private void BrowseBtn_Click1(object sender, EventArgs e)
         {
-
-            //-- probably better way to get sibling (previous) control.
             OpenFileDialog opf = new OpenFileDialog();
             if(opf.ShowDialog() == DialogResult.OK)
             {
                 Button b = (Button)sender;
-                var i = 0;
-                
-                foreach(Control c in this.Controls)
+                Control c = GetNextControl(b, false);
+                if(c.GetType() == typeof(TextBox))
                 {
-                    if(c.Name == b.Name)
-                    {
-                        if (this.Controls[i - 1].GetType() == typeof(TextBox))
-                        {
-                            TextBox t = this.Controls[i - 1] as TextBox;
-                            t.Text = opf.FileName.Substring(opf.FileName.LastIndexOf(@"\") + 1);
-                            break;
-                        }
-                    }
-                    i++;
+                    TextBox t = (TextBox)c;
+                    t.Text = opf.FileName.Substring(opf.FileName.LastIndexOf(@"\") + 1);
                 }
             }
             
